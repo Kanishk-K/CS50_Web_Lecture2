@@ -22,3 +22,18 @@ html, body {
 button{
     margin:10px;
 }
+.appear{
+    opacity: 0;
+}
+.container{
+    min-height: 100%;
+}
+#first{
+    height: 10%;
+}
+#second{
+    height: 65%;
+}
+#third{
+    height: 25%;
+}
