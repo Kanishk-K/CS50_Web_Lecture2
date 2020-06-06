@@ -3,24 +3,30 @@
     <head>
         <title>OnePage</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
-        <link rel="stylesheet" href="Landing.css">
-        <script src=Landing.js></script>
+        <link rel="stylesheet" type = "text/css" href = "{{ url_for('static',filename='styles/Landing.css') }}">
+        <script src="{{ url_for('static',filename='script/Landing.js')}}"></script>
     </head>
-    <body class="centered-wrapper">
-        <div class="centered-content">
-            <form class = "UsernameInput">
-                <input type="DisplayName" class="form-control" id="DISP" placeholder="Enter A Display Name" autocomplete="off">
-                <button type="button" class="btn btn-outline-primary">Submit</button>
-            </form>
-            <div class = "container">
-                <div class ="row" id="first">
-                    <h3 id="intro" class = "col-sm appear"></h3>
+    <body>
+        <div class = "container h-100">
+            <div class ="row h-10 bg-light">
+                <button type="button" class="col-sm btn btn-dark" id="AddChannel">Add Channel</button>
+                <button type="button" class="col-sm btn btn-dark" id="FindChannel">Find Channel</button>
+                <button type="button" id="intro" class="col-sm btn btn-dark" disabled>Your Username Here</button>
+            </div>
+            <div class = "row d-flex justify-content-center top-buffer">
+                <div class = "col-sm-4">
+                    <form class = "d-flex justify-content-center UsernameInput">
+                        <input type="DisplayName" class="form-control" id="DISP" placeholder="Enter A Display Name" autocomplete="off">
+                        <button type="button" class="btn btn-outline-primary" id="InputButton">Submit</button>
+                    </form>
                 </div>
-                <div class ="row" id="second">
-                    
-                </div>
-                <div class ="row" id="third">
-                    <h5 class = "appear">Test</h5>
+            </div>
+            <div class = "row d-flex justify-content-center top-buffer NewChannel">
+                <div class = "col-sm-4">
+                    <form class = "d-flex justify-content-center ChannelInput">
+                        <input type="DisplayName" class="form-control" id="ChannelDISP" placeholder="Enter a Channel Name" autocomplete="off">
+                        <button type="button" class="btn btn-outline-primary" id="ChannelButton">Create</button>
+                    </form>
                 </div>
             </div>
         </div>

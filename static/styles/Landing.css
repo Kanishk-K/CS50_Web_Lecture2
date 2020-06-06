@@ -1,0 +1,24 @@
+button{
+    margin:10px;
+}
+#appear{
+    opacity: 0;
+}
+.container{
+    min-height: 100%;
+}
+h5{
+    text-align: center;
+}
+.top-buffer { 
+    margin-top:20px; 
+}
+form{
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+}
+.NewChannel{
+    opacity: 0;
+    height: 0px;
+}
