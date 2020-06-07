@@ -35,8 +35,14 @@ def send():
 def history():
     channel = request.form.get("channel")
     print(channel)
-    i = AllChannelsId[channel]
-    return jsonify(AllChannels[i])
+    if channel in AllChannelsId.keys():
+        i = AllChannelsId[channel]
+        print("Channel found in dict")
+        print(AllChannels[i])
+        return jsonify(success = True, messages = AllChannels[i])
+    else:
+        print("Channel not found in dict")
+        return jsonify(success = False, messages = "The channel was removed or unreachable.")
 @socketio.on("ChatSent")
 def vote(ChatMessage):
     channel = ChatMessage["channel"]
@@ -50,4 +56,4 @@ def vote(ChatMessage):
         AllChannels[i].append(TotalMessage)
     else:
         AllChannels[i].append(TotalMessage)
-    emit("ChatDistribute", {"RefMessage": TotalMessage}, broadcast=True)
+    emit("ChatDistribute", {"RefMessage": TotalMessage, "channel" : channel}, broadcast=True)

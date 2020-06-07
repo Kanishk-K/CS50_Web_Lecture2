@@ -19,10 +19,11 @@ document.addEventListener('DOMContentLoaded', function(){
     const ChatButton = document.querySelector("#ChatButton");
     const ChatBox = document.querySelector("ul");
     const ConnectedTo = document.querySelector("#connected");
+    const LeaveButton = document.querySelector("#LeaveButton");
     let GlobalChannel = null;
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
-    if (localStorage.getItem("username") === null){
+    if (localStorage.getItem("username") === null && localStorage.getItem("LastChannel") === null){
         InputButton.disabled = true;
         AddChannel.disabled = true;
         FindChannel.disabled = true;
@@ -53,11 +54,51 @@ document.addEventListener('DOMContentLoaded', function(){
             return false
         }
     }
+    else if (localStorage.getItem("username") !== null && localStorage.getItem("LastChannel") === null) {
+        const username = localStorage.getItem("username");
+        document.querySelector('#intro').innerHTML = `${username}`;
+        UsernameForm.style.opacity = 0;
+        UsernameForm.style.height = 0;
+    }
     else {
         const username = localStorage.getItem("username");
         document.querySelector('#intro').innerHTML = `${username}`;
         UsernameForm.style.opacity = 0;
         UsernameForm.style.height = 0;
+        GlobalChannel = localStorage.getItem("LastChannel");
+        const request = new XMLHttpRequest();
+        request.open('POST', '/GetHistory');
+        request.onload = () => {
+            const response = JSON.parse(request.responseText);
+            if (response.success) {
+                console.log(response.messages);
+                response.messages.forEach((item, index) => {
+                    var li = document.createElement("li");
+                    li.innerHTML = `${item}`
+                    document.querySelector("ul").appendChild(li);
+                })
+                ConnectedTo.innerHTML = `Connected To: ${GlobalChannel}`;
+                ChatHolder.style.opacity = 1;
+                ChatHolder.style.height = "100%";
+                AddChannel.disabled = true;
+                FindChannel.disabled = true;
+            }
+            else {
+                localStorage.setItem("LastChannel",null);
+                ChatHolder.style.opacity = 0;
+                ChatHolder.style.height = 0;
+                AddChannel.disabled = false;
+                FindChannel.disabled = false;
+
+            }
+        }
+        const AllChannels = new FormData();
+        AllChannels.append('channel',GlobalChannel)
+        request.send(AllChannels);
+        ChatHolder.style.opacity = 1;
+        ChatHolder.style.height = "100%";
+        AddChannel.disabled = true;
+        FindChannel.disabled = true;
     }
     AddChannel.onclick = () => {
         ChannelForm.style.opacity = 1;
@@ -140,16 +181,17 @@ document.addEventListener('DOMContentLoaded', function(){
            ChatHolder.style.opacity = 1;
            ChatHolder.style.height = "100%";
            GlobalChannel = val;
+           localStorage.setItem('LastChannel',val);
            ConnectedTo.innerHTML = `Connected To: ${val}`;
            const request = new XMLHttpRequest();
            request.open('POST', '/GetHistory');
            request.onload = () => {
                const response = JSON.parse(request.responseText);
                console.log(response);
-               response.forEach((item, index) => {
+               response.messages.forEach((item, index) => {
                    var li = document.createElement("li");
                    li.innerHTML = `${item}`
-                   Chatbox.appendChild(li);
+                   document.querySelector("ul").appendChild(li);
                })
            }
            const AllChannels = new FormData();
@@ -171,14 +213,19 @@ document.addEventListener('DOMContentLoaded', function(){
     socket.on('connect', () => {
         ChatButton.onclick = () => {
             const ChatMessage = ChatInput.value;
+            ChatInput.value = "";
             socket.emit('ChatSent', {'channel':GlobalChannel,'username':document.querySelector('#intro').innerHTML,'message':ChatMessage});
         }
     })
     socket.on('ChatDistribute', message => {
-        var li = document.createElement("li");
-        console.log(message.RefMessage);
-        li.innerHTML = `${message.RefMessage}`;
-        ChatBox.appendChild(li);
+        if (message.channel === ConnectedTo.innerHTML.substring(14,ConnectedTo.innerHTML.length)){
+            var li = document.createElement("li");
+            console.log(message.RefMessage);
+            li.innerHTML = `${message.RefMessage}`;
+            ChatBox.appendChild(li);
+        }
+        else {
+        }
     })
 })
 

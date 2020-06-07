@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>OnePage</title>
+        <title>Project 2</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
         <link rel="stylesheet" type = "text/css" href = "{{ url_for('static',filename='styles/Landing.css') }}">
         <script src="{{ url_for('static',filename='script/Landing.js')}}"></script>
@@ -52,6 +52,7 @@
                     <form class = "d-flex justify-content-center ChatForm">
                         <input type="DisplayName" class="form-control" id="ChatDISP" placeholder="Type Into The Chat" autocomplete="off">
                         <button type="button" class="btn btn-outline-primary" id="ChatButton">Send</button>
+                        <button type="button" class="btn btn-outline-danger" id="LeaveButton">Leave Channel</button>
                     </form>
                 </div>
             </div>
