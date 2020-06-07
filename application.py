@@ -44,10 +44,14 @@ def history():
         print("Channel not found in dict")
         return jsonify(success = False, messages = "The channel was removed or unreachable.")
 @socketio.on("ChatSent")
-def vote(ChatMessage):
+def ChatSent(ChatMessage):
+    TTS = False
     channel = ChatMessage["channel"]
     username = ChatMessage["username"]
     message = ChatMessage["message"]
+    if "/tts" in message[:5]:
+        TTS = True
+        message = message.replace("/tts","",1)
     TimeSent = date.today().strftime("%a %b %d %Y %I:%M %p")
     TotalMessage = f"({TimeSent}) ({username}): {message}"
     i = AllChannelsId[channel]
@@ -56,4 +60,4 @@ def vote(ChatMessage):
         AllChannels[i].append(TotalMessage)
     else:
         AllChannels[i].append(TotalMessage)
-    emit("ChatDistribute", {"RefMessage": TotalMessage, "channel" : channel}, broadcast=True)
+    emit("ChatDistribute", {"RefMessage": TotalMessage, "channel" : channel, "TTS" : TTS, "OGmessage" : message, "username" : username}, broadcast=True)

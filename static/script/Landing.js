@@ -22,7 +22,17 @@ document.addEventListener('DOMContentLoaded', function(){
     const LeaveButton = document.querySelector("#LeaveButton");
     let GlobalChannel = null;
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
-
+    
+    var available_voices = window.speechSynthesis.getVoices();
+	var english_voice = '';
+	for(var i=0; i<available_voices.length; i++) {
+		if(available_voices[i].lang === 'en-US') {
+			english_voice = available_voices[i];
+			break;
+		}
+	}
+	if(english_voice === '')
+		english_voice = available_voices[0];
     if (localStorage.getItem("username") === null && localStorage.getItem("LastChannel") === null){
         InputButton.disabled = true;
         AddChannel.disabled = true;
@@ -228,14 +238,21 @@ document.addEventListener('DOMContentLoaded', function(){
             console.log(message.RefMessage);
             li.innerHTML = `${message.RefMessage}`;
             ChatBox.appendChild(li);
-        }
-        else {
+            if (message.TTS === true){
+                var utter = new SpeechSynthesisUtterance();
+                utter.rate = 1;
+                utter.pitch = 0.5;
+                utter.text = `${message.username} says ${message.OGmessage}`;
+                utter.voice = english_voice;
+                window.speechSynthesis.speak(utter);
+            }
         }
     })
     LeaveButton.onclick = () => {
         localStorage.setItem("LastChannel",null);
         GlobalChannel = null;
         ConnectedTo.innerHTML = "";
+        document.querySelectorAll('ul li').forEach(li => li.remove());
         AddChannel.disabled = false;
         FindChannel.disabled = false;
         ChatHolder.style.opacity = 0;
