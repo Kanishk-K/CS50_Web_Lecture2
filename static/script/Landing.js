@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function(){
     const ChannelForm = document.querySelector(".NewChannel");
     const ChannelButton = document.querySelector('#ChannelButton');
     const ChannelInput = document.querySelector('#ChannelDISP');
+    const ChannelAlert = document.querySelector('.ChannelAlert')
     if (localStorage.getItem("username") === null){
         InputButton.disabled = true;
         AddChannel.disabled = true;
@@ -56,7 +57,6 @@ document.addEventListener('DOMContentLoaded', function(){
         }
     }
     ChannelButton.onclick = () => {
-        console.log("ChannelButton has been clicked")
         const request = new XMLHttpRequest();
         const NewChannel = ChannelInput.value;
         request.open('POST', '/PostChannel');
@@ -65,10 +65,13 @@ document.addEventListener('DOMContentLoaded', function(){
             const response = JSON.parse(request.responseText);
             
             if (response.success) {
-                console.log(response.message);
+                ChannelAlert.className = "alert alert-success ChannelAlert";
+                ChannelAlert.innerHTML = response.message;
+
             }
             else {
-                console.log(response.message)
+                ChannelAlert.className = "alert alert-danger ChannelAlert";
+                ChannelAlert.innerHTML = response.message;
             }
         }
         const ChannelInfo = new FormData();

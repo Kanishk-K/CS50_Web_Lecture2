@@ -18,8 +18,8 @@ def convert():
     NewChannel = request.form.get("ChannelName")
     if NewChannel in AllChannels:
         print("There was a conflict")
-        return jsonify({success: False, message: "The channel already exists"})
+        return jsonify(success = False, message = "The channel already exists")
     else:
         print("There was not a conflict")
         AllChannels.append(NewChannel)
-        return jsonify({success: True, message: f"The channel {NewChannel} was created"})
+        return jsonify(success = True, message = f"The channel {NewChannel} was created")
