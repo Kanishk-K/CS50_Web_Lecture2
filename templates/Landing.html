@@ -20,40 +20,39 @@
             <h4 id = "connected"></h4>
             <div class = "row d-flex justify-content-center top-buffer">
                 <div class = "col-sm-4">
-                    <form class = "d-flex justify-content-center UsernameInput">
+                    <div class = "d-flex justify-content-center UsernameInput">
                         <input type="DisplayName" class="form-control" id="DISP" placeholder="Enter A Display Name" autocomplete="off">
                         <button type="button" class="btn btn-outline-primary" id="InputButton">Submit</button>
-                    </form>
+                    </div>
                 </div>
             </div>
             <div class = "row d-flex justify-content-center top-buffer NewChannel">
                 <div class = "col-sm-4">
-                    <form class = "d-flex justify-content-center ChannelInput">
+                    <div class = "d-flex justify-content-center ChannelInput">
                         <input type="DisplayName" class="form-control" id="ChannelDISP" placeholder="Enter a Channel Name" autocomplete="off">
                         <button type="button" class="btn btn-outline-primary" id="ChannelButton">Create</button>
-                    </form>
+                    </div>
                     <div class="alert alert-light ChannelAlert" role="alert"></div>
                 </div>
             </div>
             <div class = "row d-flex justify-content-center FindChannel">
                 <div class = "col-sm-4">
-                    <form class = "d-flex justify-content-center FindInput">
+                    <div class = "d-flex justify-content-center FindInput">
                         <datalist name="state" id="Dropdown" placeholder="Choose a Channel">
                         </datalist>
                         <input type="search" autocomplete="on" list="Dropdown" id="ChannelList">
-                    </form>
+                    </div>
                 </div>
             </div>
             <div class = "row ChatBox">
                 <div class = "Chatbox">
                     <ul>
-                    <li></li>
                     </ul>
-                    <form class = "d-flex justify-content-center ChatForm">
+                    <div class = "d-flex justify-content-center ChatForm">
                         <input type="DisplayName" class="form-control" id="ChatDISP" placeholder="Type Into The Chat" autocomplete="off">
                         <button type="button" class="btn btn-outline-primary" id="ChatButton">Send</button>
                         <button type="button" class="btn btn-outline-danger" id="LeaveButton">Leave Channel</button>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
