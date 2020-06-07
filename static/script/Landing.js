@@ -141,6 +141,20 @@ document.addEventListener('DOMContentLoaded', function(){
            ChatHolder.style.height = "100%";
            GlobalChannel = val;
            ConnectedTo.innerHTML = `Connected To: ${val}`;
+           const request = new XMLHttpRequest();
+           request.open('POST', '/GetHistory');
+           request.onload = () => {
+               const response = JSON.parse(request.responseText);
+               console.log(response);
+               response.forEach((item, index) => {
+                   var li = document.createElement("li");
+                   li.innerHTML = `${item}`
+                   Chatbox.appendChild(li);
+               })
+           }
+           const AllChannels = new FormData();
+           AllChannels.append('channel',GlobalChannel)
+           request.send(AllChannels);
            break;
          }
        }
@@ -157,7 +171,6 @@ document.addEventListener('DOMContentLoaded', function(){
     socket.on('connect', () => {
         ChatButton.onclick = () => {
             const ChatMessage = ChatInput.value;
-
             socket.emit('ChatSent', {'channel':GlobalChannel,'username':document.querySelector('#intro').innerHTML,'message':ChatMessage});
         }
     })

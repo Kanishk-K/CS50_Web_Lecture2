@@ -31,6 +31,12 @@ def convert():
 @app.route("/AllChannels", methods=["POST"])
 def send():
     return jsonify(AllChannelsName)
+@app.route("/GetHistory",methods=["POST"])
+def history():
+    channel = request.form.get("channel")
+    print(channel)
+    i = AllChannelsId[channel]
+    return jsonify(AllChannels[i])
 @socketio.on("ChatSent")
 def vote(ChatMessage):
     channel = ChatMessage["channel"]
@@ -39,5 +45,9 @@ def vote(ChatMessage):
     TimeSent = date.today().strftime("%a %b %d %Y %I:%M %p")
     TotalMessage = f"({TimeSent}) ({username}): {message}"
     i = AllChannelsId[channel]
-    AllChannels[i].append(TotalMessage)
+    if len(AllChannels[i]) == 100:
+        AllChannels[i].pop(0)
+        AllChannels[i].append(TotalMessage)
+    else:
+        AllChannels[i].append(TotalMessage)
     emit("ChatDistribute", {"RefMessage": TotalMessage}, broadcast=True)
