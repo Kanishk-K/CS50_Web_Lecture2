@@ -37,3 +37,6 @@ ul{
 #ChatDisp{
     width: 700px;
 }
+#ChatBox, #ChatForm {
+    min-width: 900px;
+}

@@ -147,6 +147,11 @@ document.addEventListener('DOMContentLoaded', function(){
         ChatHolder.style.height = 0;
         FindHolder.style.opacity = 1;
         FindHolder.style.height = "100%";
+        ChannelList.innerHTML = "";
+        document.querySelectorAll('#Dropdown option').forEach(option => option.remove())
+        for (i = Dropdown.options.length-1; i>= 0; i--) {
+            Dropdown.remove(i);
+        }
         const request = new XMLHttpRequest();
         request.open('POST', '/AllChannels');
 
@@ -227,5 +232,14 @@ document.addEventListener('DOMContentLoaded', function(){
         else {
         }
     })
+    LeaveButton.onclick = () => {
+        localStorage.setItem("LastChannel",null);
+        GlobalChannel = null;
+        ConnectedTo.innerHTML = "";
+        AddChannel.disabled = false;
+        FindChannel.disabled = false;
+        ChatHolder.style.opacity = 0;
+        ChatHolder.style.height = 0;
+    }
 })
 
