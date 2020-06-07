@@ -5,6 +5,9 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
         <link rel="stylesheet" type = "text/css" href = "{{ url_for('static',filename='styles/Landing.css') }}">
         <script src="{{ url_for('static',filename='script/Landing.js')}}"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
     </head>
     <body>
         <div class = "container h-100">
@@ -28,6 +31,17 @@
                         <button type="button" class="btn btn-outline-primary" id="ChannelButton">Create</button>
                     </form>
                     <div class="alert alert-light ChannelAlert" role="alert"></div>
+                </div>
+            </div>
+            <div class = "row d-flex justify-content-center top-buffer FindChannel">
+                <div class = "col-sm-4">
+                    <form class = "d-flex justify-content-center FindInput">
+                        <datalist name="state" id="Dropdown" placeholder="Choose a Channel">
+                            <option value="Alabama">Alabama</option>
+                            <option value="Wyoming">Wyoming</option>
+                        </datalist>
+                        <input autocomplete="on" list="Dropdown">
+                    </form>
                 </div>
             </div>
         </div>

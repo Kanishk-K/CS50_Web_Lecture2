@@ -23,3 +23,6 @@ def convert():
         print("There was not a conflict")
         AllChannels.append(NewChannel)
         return jsonify(success = True, message = f"The channel {NewChannel} was created")
+@app.route("/AllChannels", methods=["POST"])
+def send():
+    return jsonify(AllChannels)

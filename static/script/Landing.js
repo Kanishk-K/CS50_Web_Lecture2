@@ -4,10 +4,14 @@ document.addEventListener('DOMContentLoaded', function(){
     const FindChannel = document.querySelector('#FindChannel');
     const UsernameForm = document.querySelector(".UsernameInput");
     const UsernameInput = document.querySelector('#DISP');
+    const ChannelHolder = document.querySelector(".ChannelInput");
     const ChannelForm = document.querySelector(".NewChannel");
     const ChannelButton = document.querySelector('#ChannelButton');
     const ChannelInput = document.querySelector('#ChannelDISP');
     const ChannelAlert = document.querySelector('.ChannelAlert')
+    const FindHolder = document.querySelector(".FindChannel");
+    const FindForm = document.querySelector(".FindInput");
+    const Dropdown = document.querySelector("#Dropdown");
     if (localStorage.getItem("username") === null){
         InputButton.disabled = true;
         AddChannel.disabled = true;
@@ -47,6 +51,8 @@ document.addEventListener('DOMContentLoaded', function(){
     AddChannel.onclick = () => {
         ChannelForm.style.opacity = 1;
         ChannelForm.style.height = "100%";
+        FindHolder.style.opacity = 0;
+        FindHolder.style.height = 0;
     }
     ChannelInput.onkeyup = () => {
         if (ChannelInput.value.length > 0) {
@@ -59,6 +65,7 @@ document.addEventListener('DOMContentLoaded', function(){
     ChannelButton.onclick = () => {
         const request = new XMLHttpRequest();
         const NewChannel = ChannelInput.value;
+        ChannelInput.value = "";
         request.open('POST', '/PostChannel');
 
         request.onload = () => {
@@ -78,6 +85,27 @@ document.addEventListener('DOMContentLoaded', function(){
         ChannelInfo.append("ChannelName",NewChannel)
         request.send(ChannelInfo);
         return false
+    }
+    FindChannel.onclick = () => {
+        ChannelForm.style.opacity = 0;
+        ChannelForm.style.height = 0;
+        FindHolder.style.opacity = 1;
+        FindHolder.style.height = "100%";
+        const request = new XMLHttpRequest();
+        request.open('POST', '/AllChannels');
+
+        request.onload = () => {
+            const response = JSON.parse(request.responseText);
+            response.forEach((item, index) => {
+                var node = document.createElement("OPTION");
+                node.value = item;
+                var textnode = document.createTextNode(item);
+                node.appendChild(textnode);
+                Dropdown.appendChild(node);
+            })
+        }
+        const AllChannels = new FormData();
+        request.send(AllChannels);
     }
 })
 
