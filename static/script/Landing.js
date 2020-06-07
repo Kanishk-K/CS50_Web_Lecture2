@@ -12,11 +12,22 @@ document.addEventListener('DOMContentLoaded', function(){
     const FindHolder = document.querySelector(".FindChannel");
     const FindForm = document.querySelector(".FindInput");
     const Dropdown = document.querySelector("#Dropdown");
+    const ChannelList = document.querySelector("#ChannelList");
+    const ChatHolder = document.querySelector(".ChatBox");
+    const ChatForm = document.querySelector(".ChatForm");
+    const ChatInput = document.querySelector("#ChatDISP");
+    const ChatButton = document.querySelector("#ChatButton");
+    const ChatBox = document.querySelector("ul");
+    const ConnectedTo = document.querySelector("#connected");
+    let GlobalChannel = null;
+    var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+
     if (localStorage.getItem("username") === null){
         InputButton.disabled = true;
         AddChannel.disabled = true;
         FindChannel.disabled = true;
         ChannelButton.disabled = true;
+        ChatButton.disabled = true;
         UsernameForm.onsubmit = () => {
             return false
         }
@@ -53,6 +64,8 @@ document.addEventListener('DOMContentLoaded', function(){
         ChannelForm.style.height = "100%";
         FindHolder.style.opacity = 0;
         FindHolder.style.height = 0;
+        ChatHolder.style.opacity = 0;
+        ChatHolder.style.height = 0;
     }
     ChannelInput.onkeyup = () => {
         if (ChannelInput.value.length > 0) {
@@ -89,6 +102,8 @@ document.addEventListener('DOMContentLoaded', function(){
     FindChannel.onclick = () => {
         ChannelForm.style.opacity = 0;
         ChannelForm.style.height = 0;
+        ChatHolder.style.opacity = 0;
+        ChatHolder.style.height = 0;
         FindHolder.style.opacity = 1;
         FindHolder.style.height = "100%";
         const request = new XMLHttpRequest();
@@ -96,6 +111,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
         request.onload = () => {
             const response = JSON.parse(request.responseText);
+            console.log(response);
             response.forEach((item, index) => {
                 var node = document.createElement("OPTION");
                 node.value = item;
@@ -107,5 +123,49 @@ document.addEventListener('DOMContentLoaded', function(){
         const AllChannels = new FormData();
         request.send(AllChannels);
     }
+    function onInput(e) {
+        var input = e.target,
+            val = input.value;
+            list = input.getAttribute('list'),
+            options = document.getElementById(list).childNodes;
+     
+       for(var i = 0; i < options.length; i++) {
+         if(options[i].innerText === val) {
+           // An item was selected from the list!
+           // yourCallbackHere()
+           AddChannel.disabled = true;
+           FindChannel.disabled = true;
+           FindHolder.style.opacity = 0;
+           FindHolder.style.height = 0;
+           ChatHolder.style.opacity = 1;
+           ChatHolder.style.height = "100%";
+           GlobalChannel = val;
+           ConnectedTo.innerHTML = `Connected To: ${val}`;
+           break;
+         }
+       }
+     }
+    ChannelList.addEventListener('input', onInput);
+    ChatInput.onkeyup = () => {
+        if (ChatInput.value.length > 0) {
+            ChatButton.disabled = false;
+        }
+        else {
+            ChatButton.disabled = true;
+        }
+    }
+    socket.on('connect', () => {
+        ChatButton.onclick = () => {
+            const ChatMessage = ChatInput.value;
+
+            socket.emit('ChatSent', {'channel':GlobalChannel,'username':document.querySelector('#intro').innerHTML,'message':ChatMessage});
+        }
+    })
+    socket.on('ChatDistribute', message => {
+        var li = document.createElement("li");
+        console.log(message.RefMessage);
+        li.innerHTML = `${message.RefMessage}`;
+        ChatBox.appendChild(li);
+    })
 })
 
